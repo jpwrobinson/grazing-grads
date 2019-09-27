@@ -1,0 +1,361 @@
+---
+title: "Habitat and fishing control grazing potential on coral reefs"
+output:
+  pdf_document:
+  latex_engine: xelatex
+  fig_width: 12
+html_document: default
+fig_height: 6
+fontsize: 12pt
+---
+
+```{r setup, echo=FALSE, message=FALSE, warning=FALSE, results='hide'}
+knitr::opts_chunk$set(echo = FALSE)
+source('scripts/01_bite_rate_models.R')
+source('scripts/02_convert_biom_to_bites.R')
+source('scripts/03_MMI_tvalue_analysis.R')
+```
+
+ 
+#### Authors
+James PW Robinson^1^, Jamie M McDevitt-Irwin^2^, Jan-Claas Dajka^1^, Jeneen Hadj-Hammou^1^, Samantha Howlett^1^, Alexia Graba-Landry^3^, Andrew S Hoey^3^, Kirsty L. Nash^4,5^, Shaun K Wilson^6,7^, Nicholas AJ Graham^1^.
+
+#### Affiliations 
+1.	Lancaster Environment Centre, Lancaster University, Lancaster, LA1 4YQ, UK
+2.	Stanford University, Hopkins Marine Station, Pacific Grove, CA 93950, USA
+3.	ARC Centre of Excellence for Coral Reef Studies, James Cook University, Townsville, Queensland 4811, Australia
+4.	Centre for Marine Socioecology, University of Tasmania, Hobart, TAS 7001, Australia
+5.	Institute for Marine & Antarctic Studies, University of Tasmania, Hobart, TAS 7001, Australia
+6.	Department of Biodiversity, Conservation and Attractions: Marine Science Program, Kensington, WA 6151, Australia
+7.	Oceans Institute, University of Western Australia, Crawley, WA 6009, Australia
+
+
+#### Keywords
+ecosystem function, herbivory, fishing, bottom-up, top-down, body size, benthic
+
+\newpage
+### Abstract
+
+1.	Herbivory is a key process on coral reefs which, through grazing of algae, can help sustain coral-dominated states on frequently-disturbed reefs and reverse macroalgal regime shifts on degraded ones. 
+
+2.	Our understanding of herbivory on reefs is largely founded on feeding observations at small spatial scales, yet the biomass and structure of herbivore populations is more closely linked to processes which can be highly variable across large areas, such as benthic habitat turnover and fishing pressure. Though our understanding of spatiotemporal variation in grazer biomass is well developed, equivalent macroscale approaches to understanding bottom-up and top-down controls on herbivory are lacking.
+
+3.	Here, we integrate underwater survey data of fish abundances from four Indo-Pacific island regions with herbivore feeding observations to estimate grazing rates for two herbivore functions, cropping (which controls turf algae) and scraping (which promotes coral settlement by clearing benthic substrate), for 72 coral reefs. By including a range of reef states, from coral to algal dominance and heavily-fished to remote wilderness areas, we evaluate the influences of benthic habitat and fishing on the grazing rates of fish assemblages.
+
+4.	Cropping rates were primarily influenced by benthic condition, with cropping maximised on structurally complex reefs with high substratum availability and low macroalgal cover. Fishing was the primary driver of scraping function, with scraping rates depleted at most reefs relative to remote, unfished reefs, though scraping did increase with substratum availability and structural complexity. 
+
+5.	Ultimately, benthic and fishing conditions influenced herbivore functioning through their effect on grazer biomass, which was tightly correlated to grazing rates. For a given level of biomass, we show that grazing rates are higher on reefs dominated by small-bodied fishes, suggesting that grazing pressure is greatest when grazer size structure is truncated. 
+
+6.	Stressors which cause coral declines and clear substrate for turf algae will likely stimulate increases in cropping rates, in both fished and protected areas. In contrast, scraping functions are already impaired at reefs inhabited by people, particularly where structural complexity has collapsed, indicating that restoration of these key processes will require scraper biomass to be rebuilt towards wilderness levels.
+
+\newpage
+### Introduction
+
+Herbivory is crucial to ecosystem function and community structure across terrestrial and aquatic ecosystems, playing a key role in cycling nutrients (Metcalfe et al. 2014), regulating species diversity and productivity (Royo et al. 2010, Rasher et al. 2013, Prieditis et al. 2017), and controlling habitat regime shifts (Zimov et al. 1995, Keesing and Young 2014, Verges et al. 2014). Herbivory processes are generally measured at local scales relevant to individual behaviours and population sizes, which limits our understanding of how ecosystems function across larger spatial scales. Furthermore, anthropogenic pressures typically impact ecosystem processes, including herbivory, across much larger areas (Jackson 2008). Therefore, developing our understanding of both natural and anthropogenic drivers on herbivory at broad scales requires the integration of fine-scale herbivory observations with macroecological datasets. Such analyses are particularly relevant for coral reef ecosystems, which are facing multiple damaging human pressures and where herbivory is a key ecosystem function (Hughes et al. 2007, Cheal et al. 2010).
+
+On tropical coral reefs, the removal of algae by herbivorous fishes is a critical process which clears space for coral settlement and growth (Bellwood et al. 2004). Herbivorous fishes can be categorized into browsers, which remove established macroalgae, and a diverse guild of grazers that feed on surfaces covered with algal turfs and associated microbial communities (Green & Bellwood 2009). Within the grazers, observations of feeding morphology and behaviour have identified two distinct grazing functions: cropping and scraping (Bellwood and Choat 1990, Polunin et al. 1995). Cropping species, primarily members of the Acanthuridae and Siganidae, remove the upper portions of the algae when feeding, which maintains algae in cropped states, promoting coral settlement and preventing transitions to fleshy macroalgae (Arnold et al. 2010). Scraping species in the tribe Scarinae gouge part of the underlying reef substratum together with microscopic epiphytes and epilithic and endolithic phototrophs when feeding (Choat and Clements 2018). In doing so, scrapers clear space for the settlement of benthic organisms, including corals (Bonaldo et al. 2014). Combined, cropping and scraping are considered essential functions which help sustain coral-dominated states (Bellwood et al. 2004, Hughes et al. 2007) and potentially reverse algal regime shifts (Graham et al. 2013).
+
+Mature algae can proliferate in the absence of sufficient grazing pressure (Mumby et al. 2006, Burkepile and Hay 2008, Rasher et al. 2013), and correlative analyses of fished reef ecosystems have provided evidence of grazing biomass thresholds below which reefs become algae dominated (Graham et al. 2015, Robinson et al. 2018). Herbivorous fish populations are heavily exploited across much of the tropics (Edwards et al. 2014), which has compromised grazing functions on reefs which fail to maintain herbivore biomass thresholds (Bellwood et al. 2012, Graham et al. 2015, Robinson et al. 2018). However, fishing effects can be confounded by the influence of benthic productivity on herbivore populations (Russ et al. 2003, 2015), while species-specific habitat associations can also structure herbivore assemblages across a range of spatial scales (Hoey & Bellwood 2008, Doropoulos et al. 2013) and benthic compositions (Hoey & Bellwood 2011, Heenan et al. 2016). Such bottom-up influences on fish populations may be particularly strong when fish rely on habitat for both structure and food, such as algal-cropping fishes which are generally small and particularly dependent on the reef matrix for shelter (Wilson et al. 2008). Thus, herbivore assemblage structure is mediated by both habitat composition and fishing intensity but links between these drivers and grazing functions are not well resolved, particularly at macroecological scales.
+
+Patterns in herbivore biomass are widely used to imply changes in herbivore functioning on coral reefs (e.g., Nash et al. 2016a, Robinson et al. 2018). However, biomass data overlooks size- and species-specific differences in feeding rates and functional roles. Therefore, measures of grazing impacts have been developed by integrating bite rate data with information on expected carbon intake for croppers (Marshell & Mumby 2015) or feeding behaviours for scrapers (Bellwood and Choat 1990, Bellwood et al. 2003). Furthermore, although allometric grazing ~ body size relationships (Lokrantz et al. 2008, Nash et al. 2013) indicate that the functional role provided by larger species is disproportionately greater (Bonaldo and Bellwood 2008), grazing potential may also depend on community size structure (Bellwood et al. 2012). Abundance decreases logarithmically with increasing body size, meaning that the potential number of bite rates produced by an assemblage of many small-bodied fish may be equivalent to an assemblage of few large-bodied individuals (Munday and Jones 1998). Size-selective fishing which removes larger individuals (Robinson et al. 2017) and species (Taylor et al. 2014) is ubiquitous on many inhabited coral reefs and often leads to greater dominance of small-bodied fishes. However, contrasting evidence that loss of large fishes impairs bioerosion functions while compensatory increases in small fishes maintain grazing rates (Bellwood et al. 2012) suggests that links between size distributions and grazing functions are not fully resolved. 
+
+Here, we assess the drivers of herbivore functioning on coral reefs across four regions in the Indo-Pacific (Fig. S1). Our macroecological-scale analysis spans a benthic gradient from coral to macroalgal dominance and a fishing gradient from open-access fisheries to no-take fishing zones and remote wilderness areas. By integrating feeding observations with underwater visual census (UVC) data on fish abundance, we measured potential grazing rates at the scale of reef sites, which is highly relevant for understanding how benthic and fishing influences may alter ecosystem functioning (Nash et al. 2016a). We examine 1) how fishing pressure and benthic composition influences the grazing rates of two major feeding groups (croppers and scrapers), and 2) how grazing rates are controlled by both the biomass and size structure of grazing assemblages.
+
+### Materials and Methods
+
+#### Survey methods
+
+We surveyed 72 sites across Seychelles (n = 21), Maldives (11), the Chagos archipelago (25), and the Great Barrier Reef (GBR) (15) ([Supplementary Methods](https://github.com/jpwrobinson/grazing-grads/blob/master/supp-material.pdf)). Grazing fish assemblages were surveyed using 8 replicate point counts of 7 m radius (Seychelles) or 4 replicate belt transects of 50 m length (Maldives, Chagos archipelago, GBR) conducted on hard-bottom reef slope habitat at 2-10 m depth. All sites were surveyed once, except for Seychelles where each site was surveyed in 2008, 2011, 2014 and 2017. Because estimates of fish biomass using point counts and belt transects are comparable (Samoilys and Carlos 2000), these survey methods can be combined to infer large-scale correlative patterns for coral reefs (McClanahan et al. 2011, MacNeil et al. 2015). The datasets we analyse have also been combined in previous studies (Cinner et al. 2016, Graham et al. 2017, Darling et al. 2017). Surveys were designed to minimise diver avoidance or attracting fish and were conducted by a single observer (NAJG). In point counts, large mobile species were censused before smaller territorial species. In belt transects, larger mobile fish were surveyed in a 5-m wide belt while simultaneously deploying the transect tape, and smaller site-attached damselfish species within a 2-m wide belt were recorded in the opposite direction. For both survey types, all diurnal, non-cryptic (>8 cm TL) reef-associated fish were counted and their TL estimated to the nearest centimetre. Length measurements were calibrated by estimating the length of sections of PVC pipe and comparing it to their known length prior to data collection each day, which indicated estimates were accurate within 2-3% (Graham et al 2007). Fish lengths were then converted to body mass (grams) using published length-weight relationships (Froese and Pauly 2018) and standardised by survey area to give species-level biomass estimates that were comparable across datasets (kg ha^-1^). The UVC dataset included 101 herbivore species (Table S1), with 11 species common to all four regions.
+
+Herbivore species were further categorised as croppers or scrapers according to their morphology and feeding behaviour (Green and Bellwood 2009). While both groups feed primarily on the epilithial algal matrix (EAM) covered substrata, they differ in the amount of material/substratum that is removed during the feeding action. Croppers remove the upper portions of the algae and associated detritus and microbes leaving the basal portions of the algae intact on the substratum, while scrapers remove shallow pieces of the substratum together with the EAM, leaving distinct bite scars (Choat et al. 2002, Wilson et al. 2003, Hoey and Bellwood 2008). 
+
+Following fish surveys, benthic habitat composition was surveyed with eight 10-m line intercept transects (Seychelles), or four 50-m point intercept (benthos recorded every 50 cm) transects (Chagos archipelago, GBR, Maldives). We recorded the cover of hard corals, macroalgae and turf algae, as well as non-living substrate (rock, bare substrate, rubble and sand). The structural complexity of the reef was visually estimated on a six-point scale, ranging from 0 (no vertical relief) to 5 (complex habitat with caves and overhangs) (Polunin and Roberts 1993), which correlates strongly with a range of other methods for capturing the structural complexity of coral reefs (Wilson et al. 2007).
+
+#### Herbivore feeding observations
+
+Feeding observations of Indo-Pacific grazing fishes provided species-level estimates on bite rates of croppers and scrapers. Surveys were conducted in the Red Sea, Indonesia by a single observer (ASH), and in the GBR by two observers (ASH, AGL). We analysed feeding observations for species observed in the UVC dataset (n = 39) ([Supplementary Methods](https://github.com/jpwrobinson/grazing-grads/blob/master/supp-material.pdf), Table S1). Briefly, an individual fish of a target species was haphazardly selected and its body length (total length in cm) estimated. After a ~30 second acclimation period, each individual was followed for a minimum of 3 minutes during which the number of bites and the feeding substratum was recorded. A short acclimation period is typical for reef fish behavioural studies (Choat & Clements 1993, Pratchett 2005, Feary et al. 2018), and here ensured that potential diver effects were minimized (<5% of fishes responded negatively to diver presence). We estimated the average feeding rate (bites per minute) for each observed fish. For scrapers, we also estimated the bite scar size using a separate dataset in which one diver followed individual fish and recorded the length and width of each bite scar, and estimated the total length of the fish.
+
+#### Grazing rate estimates
+
+We used feeding observations to convert UVC biomass estimates into the total grazing potential of croppers and scrapers. We defined grazing functions separately for each functional group whereby cropping function was measured as feeding intensity (bite rate data) and scraping function was measured as area grazed (bite rate and bite area data). We used a Bayesian hierarchical modelling framework that estimates species- and genera-level functional rates, which allowed us to estimate grazing rates for UVC species which were not observed in feeding surveys (n = 63). Cropper function was quantified in terms of potential feeding intensity, the total number of bites per minute, and derived from a predictive model which accounted for species- and genera-specific bite rates ([Supplementary Methods](https://github.com/jpwrobinson/grazing-grads/blob/master/supp-material.pdf), Table S2). We then used allometric relationships to convert bite rates into grams of carbon (g C) removed through EAM consumption (Marshell and Mumby 2015). For scrapers, we defined scraping function in terms of potential area of substrata cleared per minute. Feeding observations provided estimates of bite rates, which we modelled as a function of body size (TL, cm; r = -0.43) according to species- and genera-specific grazing rates ([Supplementary Methods](https://github.com/jpwrobinson/grazing-grads/blob/master/supp-material.pdf), Fig. S2, Table S2). We used bite area estimates to convert bite rates into area scraped per minute (m^2^ minute^-1^). Cropping and scraping rates were assigned to all observed species, corrected by fish biomass, then summed within surveys and averaged to give site-level estimates of potential grazing function (croppers = g C ha^-1^ min^-1^, scrapers = m^2^ min^-1^ ha^-1^).
+
+#### Explanatory covariates
+
+First, to account for fishing effects ranging from the remote and protected Chagos archipelago to heavily-exploited reefs in Seychelles, we estimated fishable biomass as a proxy for exploitation pressure. This proxy, based on total fish community biomass, is highly sensitive to exploitation pressure and predicted by human population size, access to markets, and fisheries management (Cinner et al. 2016), and has been used to represent large-scale fishing gradients in numerous studies (e.g. McClanahan et al. 2011, Graham et al. 2017). Here, fishable biomass was only moderately correlated with grazing biomass (Pearson’s r: croppers = 0.50, scrapers = 0.48) and thus captures information on exploitation pressure for the full reef fish assemblage. Reefs were also assigned a categorical fishing pressure covariate to distinguish between protected (i.e. no-take areas), exploited, and remote reefs ([Supplementary Methods](https://github.com/jpwrobinson/grazing-grads/blob/master/supp-material.pdf)).
+
+Second, benthic surveys provided site-level estimates of benthic composition. We estimated structural complexity and the site-level cover for four major habitat-forming groups (live hard coral, macroalgae, available substrate, and rubble) by averaging across replicates at each site. Available substrate was the total cover of rock, bare substrate, and turf algae, and represents the area of substrate available for EAM growth. Though the spatial scale at which fish and benthic metrics are collected may affect the strength of correlations (Wismer et al 2019), here benthic surveys were conducted adjacent to fish surveys and thus provided information on habitat composition at spatial scales which structure herbivorous fish assemblages (Russ et al. 2015, Nash et al. 2016b) 
+
+Third, we estimated the biomass of each functional group (kg ha^-1^) and a large fish indicator (LFI) as a measure of size structure (Robinson et al. 2017). We use the LFI to measure the relative abundance of large-bodied fish, which are considered key contributors to grazing functions because of their high per-capita consumption rates (Lokrantz et al. 2008) and long foraging movements (Nash et al. 2013). We defined large fish separately for each group as the length at the 75% quantile of the size distribution in the full dataset, such that the LFI was the relative abundance of fish greater than 15 cm for croppers and 30 cm for scrapers. Biomass and the LFI were estimated for each replicate and then averaged for each reef.
+
+#### Statistical modelling
+
+We modelled variation in herbivore functioning according to 1) gradients in benthic habitat composition and fishing pressure and 2) grazing rates estimated from grazer biomass and assemblage size structure. To place modelled effect sizes on a common scale, we scaled and centered all continuous covariates to a mean of zero and standard deviation of one and converted the categorical fishing status covariate into two dummy variables (fished - protected, fished - remote) (Schielzeth 2010). We used multimodel inference to assess parameter effect sizes. For each function, we fitted a global linear mixed effects model with five benthic fixed effects (hard coral, macroalgae, available substrate, rubble, structural complexity) and three fishing fixed effects (fishable biomass, remote reef, protected reef), for gamma-distributed errors. Potential covariance among reefs in the same dataset and year was modelled using nested random intercept terms where, for each observation i at each reef j in dataset k:
+
+
+ *Eq. 1*$$
+ \begin{aligned}
+ grazing_{ijk} = \beta_0 + \beta_1hardcoral_{ijk} + \beta_2substrate_{ijk} + \beta_3rubble_{ijk} + \beta_4macroalgae_{ijk} + \\ \beta_5complexity_{ijk} + \beta_6fishablebiomass_{ijk} + \beta_7fished.protected_{ijk} \\ + \beta_8fished.remote_{ijk} +reef_j + dataset_k + 	\epsilon_ {ijk}
+ \end{aligned}
+ $$
+
+
+Random intercept terms were used to account for different means and variance estimates for each dataset, and thus account for potential survey method effects (i.e. point counts in Seychelles vs. belt transects in the three other regions) (MacNeil et al. 2015). From the global model, we fitted all possible subset models (Bartoń 2013) and assessed their support using Akaike’s Information Criterion corrected for small sample sizes (AICc), where the top-ranked model had the lowest AICc score (Burnham and Anderson 2003). We inspected variance inflation factors (VIF) for each covariate, which indicated that global models were not biased by collinearity (VIF < 2 for all covariates in both cropper and scraper models) (Zuur et al. 2010). Initial modelling indicated support for multiple competing models (i.e. $\delta$ AICc < 2), so we visualised relative covariate effect sizes by extracting standardised t-values for all models within 7 AICc units of the top-ranked model and, for each model, rescaling t-values so that 1 is the strongest predictor in a given model, and weighing that value by the models’ AICc weight (Cade 2015). These scaled t-values represent the relative effect size of each covariate between 0 (unimportant) and 1 (important). Next we generated model predictions to visualise the effect of each covariate with scaled t-value > 0.4, excluding remaining fixed effects and random effects and correcting predictions by each models’ AICc weight, with prediction uncertainty represented by the AICc-weighted sample variance (Robinson et al. 2017). Our multi-model approach accounts for uncertainty in the ‘best’ fitted model when AICc scores indicate several models are equally valid (Burnham and Anderson 2003). We avoid potential biases in model-averaged coefficient sizes by presenting effect sizes as standardised t-values, which are more informative measures of covariate importance than sums of AICc weights (Cade 2015). 
+
+Benthic and fishing influences on assemblage-level grazing rates will be underpinned by differences in the number and size of grazing fishes (Hoey & Bellwood 2008). Indeed, as grazing estimates were derived from feeding data combined with UVC biomass data we expected grazer biomass to correlate strongly with grazing rates. Although size-selective overfishing is expected to have disproportionate impacts on grazing function (because grazing rates increase with body size; Lokrantz et al. 2008), depletion of large-bodied fish may be offset by increased abundances of smaller individuals (Bellwood et al. 2012). Thus, we examined how grazing functions vary with assemblage size structure by modelling the effects of grazer biomass and the proportion of large-bodied fishes (LFI; number of individuals > 15 cm for croppers or 30 cm for scrapers) on grazing rates. For each function, we fitted a generalized linear mixed effects model with interaction between biomass and LFI, for each observation i at each reef j in dataset k, and Gamma-distributed errors:
+
+ *Eq. 2*$$grazing_{ijk} = A + B.biomass_{ijk} + C.LFI_{ijk} + reef_j + dataset_k + 	\epsilon_ {ijk}$$
+
+We weighed model support for each covariate and the interaction between biomass and the LFI with AICc (Burnham and Anderson 2003), selecting the top-ranked model for interpretation and visualization. We visualized the continuous interaction by estimating grazing rates across the range of observed grazer biomass at two LFI values: dominance by small fishes was represented by an assemblage with LFI = 0.25 (i.e. 25% of individuals were large-bodied), and dominance by large fishes was represented by an assemblage with LFI = 0.75 (i.e. 75% of individuals were large-bodied).
+All data were analysed in R (R Core Team 2018), using packages lme4 (linear mixed effect models, Bates et al. 2015), MuMIn (multimodel inference, Bartoń 2013), and rethinking (Bayesian models, McElreath 2017).
+
+### Results
+
+For cropping fishes, 9 species were assigned individual bite rates (representing 32.9% of biomass for this group), and remaining species were assigned genera-specific (54.4%) or an average cropper bite rate (12.6%). Assemblage-level cropping rates ranged from 0.04 to 5.52 g C ha^-1^ min^-1^, with cropping highest on GBR and Chagos archipelago reefs (Fig. S3A). Irrespective of region, cropping was maximised in complex habitats with high substrate availability and low macroalgal cover (Fig. 1A-C), while hard coral or rubble cover were weak influences (Fig. 2). Cropping rates were weakly affected by fisheries management status, and were similar across remote, protected and fished reefs (Fig. 2). 
+
+```{r Figure1, include=TRUE, fig.width=10, fig.height=8, results='hide',echo=FALSE, message=FALSE}
+source('scripts/Figure1.R')
+```
+
+**Figure 1. Predicted effects of benthic and fishing drivers on potential cropping (A-C) and scraping (D-F) rates.** Benthic effects are available substrate (A, D) and structural complexity (B, E) for both grazing groups, and macroalgae (C) for croppers. Fishing effects are management status for scrapers (F). Lines and points are grazing rates as predicted by top model sets ($\leq$ 7 AICc units from top-ranking model) holding other covariates to their means, with each model prediction weighted by its AICc weight and error represented as sample variance. All visualized covariates had relative effect size ratios > 0.4 (Fig. 2). Decile rugs indicate the spread of observed data.
+
+```{r Figure2, include=TRUE, echo=FALSE,message=FALSE, results='hide', fig.height=5}
+source('scripts/Figure2.R')
+```
+
+**Figure 2. Relative effect of benthic composition and fishing pressure on modelled grazing rates for croppers (left) and scrapers (right).** Bars are relative effect size ratios of each covariate for top-ranking model sets (models $\leq$ 7 AICc units of top-ranked model), scaled to indicate very weak (0) or very important (1). See Table S3 for covariate effect sizes across the top-ranking model sets.
+
+Feeding data were more highly resolved for scraping herbivores, with all fishes assigned size-specific bite areas, and either species- (27 of 35 species, 80.9% of UVC) or genera-specific bite rates (19.1%). Scraping rates were greatest on GBR reefs (> 1 m^2^ min^-1^ ha^-1^) and lowest on Maldives reefs (< 0.3 m^2^ min^-1^ ha^-1^) (Figure S4B). Scraping rates increased with available substrate (Fig. 1D) and structural complexity (Fig. 1E), but in contrast to croppers, were relatively invariant with macroalgal cover (Fig. 2). Remote reefs had the greatest scraping rates, which were considerably lower on fished and protected reefs (Figs. 1D, 2). After accounting for these coarse protection effects, scraping was only weakly associated with total fishable biomass (Fig. 2). 
+
+Herbivore biomass is often used as a proxy for the magnitude of their function, but the relationship between biomass and function is rarely tested. Here, cropping rates were strongly and positively correlated with cropper biomass (R^2^ = 0.99, Fig. 3A), indicating that the drivers of biomass variation would match tightly to the modelled drivers of cropper function. Similarly, scraping rates increased with scraper biomass but with greater levels of unexplained variation (R^2^ = 0.81) which occurred across the biomass gradient (Fig. 3B). Size structure (LFI, the proportion of large-bodied individuals in each assemblage) modified function ~ biomass relationships, with potential cropping and scraping functions increasing as assemblages became dominated by smaller-bodied individuals (Fig. 3, Table 1). Size structure effects were moderately stronger for scrapers (parameter coefficient = -0.317 ± 0.03 standard error) than croppers (-0.087 ± 0.001). For example, at average grazer biomass levels (croppers = 65 kg ha^-1^, scrapers = 370 kg ha^-1^), grazing rates were 15% (croppers) and 21% (scrapers) greater in small-bodied assemblages (LFI = 25%) than in large-bodied assemblages (LFI = 75%). 
+ 
+```{r Figure3, include=TRUE, echo=FALSE, message=FALSE, results='hide', warning=FALSE}
+source('scripts/Figure3.R')
+```
+
+**Figure 3. Association between grazing function, grazer biomass, and assemblage size structure.** Reef-level estimates of cropper algal consumption (A) and scraper area grazed (B) plotted against UVC biomass ($log_{10}$ scale), coloured by the LFI. Lines are model fits of grazing ~ biomass relationships for small-bodied assemblages (solid line: 25% of individuals are large-bodied fish) and large-bodied assemblages (dashed line: 75% of individuals are large-bodied fish), shaded with two standard errors. Large fishes are defined as $\geq$ 15 cm for croppers and $\geq$ 30 cm for scrapers. 
+
+
+ 
+```{r Table1, include=TRUE, echo=FALSE, message=FALSE}
+tab<-read.csv('results/Table1.csv', header=TRUE)
+kableExtra::kable(tab) %>% 
+        kableExtra::row_spec(0, italic = TRUE) %>% 
+        kableExtra::row_spec(1, bold = TRUE) %>% 
+        kableExtra::row_spec(6, bold = TRUE) 
+```
+**Table 1. AIC selection for grazing function ~ grazer biomass + LFI models.** Parameter coefficients, AICc and AICc weights are shown for all competing models, ranked by AICc and with the top-ranked model in bold.
+
+### Discussion
+
+Evaluating herbivory through a macroecology lens provides insights into the functioning of a broad range of coral reefs, including coral, rubble and algal benthic states in both remote and exploited ecosystems. We found that herbivore assemblage grazing rates varied substantially across the Indo-Pacific, and in accordance with top-down (i.e. fishing pressure) and bottom-up (i.e. benthic habitat) drivers which were specific to each functional group. Cropping rates were primarily controlled by bottom-up influences, with function maximised in complex habitats that feature high substrate availability and low macroalgae cover. Conversely, for parrotfishes, scraping rates were maximised on remote reefs in the Chagos archipelago which is isolated from fishing pressures, and increased with available substrate and structural complexity. Benthic and fishing influences were underpinned by the strong dependence of grazing rates on fish biomass, although we also demonstrate that reefs dominated by small-bodied fishes exert moderately greater grazing rates.
+
+Cropping rates were primarily mediated by benthic habitat type, in particular structural complexity, macroalgae cover, and substrate availability. Our results emphasize the strong dependence of small-bodied reef fishes on benthic composition (Munday and Jones 1998, Wilson et al. 2010), and demonstrate that potential cropping function is relatively unaffected by top-down fishing effects, likely because cropping assemblages are mostly comprised of small-bodied fishes which are not targeted in many reef-associated fisheries (Hicks & McClanahan 2012). Strong relationships between benthic composition and the grazing function of small-bodied reef fish likely reflects the importance of resource availability, which has been shown to have stronger control on cropping surgeonfishes than fishing pressure (Russ et al. 2018). For example, the decrease in cropping rates with increasing macroalgae may be due to feeding avoidance in macroalgal-dominated areas (Hoey & Bellwood 2011), as well as lower accessibility of turf algae under macroalgal canopies (Roff et al. 2015). In contrast, reefs with high EAM (i.e. substrate availability) support expansive and easily accessible turf mats which are targeted by large grazer populations (Williams & Polunin 2001), which in turn limit the development of larger macroalgae. Strong benthic effects imply that cropper functioning will respond more strongly to habitat disturbances, such as coral bleaching, severe storms or nutrient enrichment of algal communities (i.e. algal growth), than to fishing. Indeed, disturbances which increase substrate availability for turf algal growth, such as coral mortality from heat stress, typically stimulate an increase in grazer abundance (Wilson et al. 2006, Gilmour et al. 2013, Russ et al. 2018). However, since structural complexity was also shown to be a strong driver of cropping rates, and flattening of reef structure has been linked to decreases in nutritional value of algal turf patches (Tebbett et al. 2019), any positive rebound of cropping function may be negated if disturbances also erode structural complexity (Graham et al. 2006, Wilson et al. 2019).
+
+Scraping was strongly influenced by fishing pressure at reefs inhabited by humans, with exploitation suppressing scraping rates far below those supported at remote, unfished reefs. This effect was stronger than influences of benthic cover and small-scale fishing protection, suggesting that bottom-up control of scraping assemblages on reefs is a relatively weak influence on their function, and that small-scale fishing protection does not conserve wilderness levels of scraping function. Movement of fish across reserve boundaries, particularly larger-bodied parrotfish which have larger home ranges (Green et al. 2014), and poor compliance with fishing regulations (Bergseth et al. 2018) likely limited the effectiveness of these small MPAs, many of which are adjacent to fishing grounds. Indeed, local extirpation of one parrotfish species (Bolbometopon muricatum) across the Indo-Pacific has also diminished bioerosion and coral predation functions (Bellwood et al. 2012). Scraping rates also increased moderately with structural complexity, further underlining the importance of coral reef structure in supporting herbivory (Nash et al. 2016a). As with croppers, the positive effect of available substrate on scraping rates is consistent with evidence that many scraping species respond positively to disturbances that clear substrate area (e.g. coral declines, Wilson et al. 2006), with increases in scraping function likely to promote coral recovery (Gilmour et al. 2013).
+
+By modelling observed grazing rates and omitting benthic and fishing covariates, we demonstrated how grazing rates can vary simply as a function of biomass and size structure. Because grazing rates were positively correlated with grazer biomass and grazing calculations were derived from body mass estimates, this suggests that benthic and fishing drivers are proximate drivers of grazing function through their effect on biomass. However, for a given level of biomass, assemblages dominated by small-bodied fishes had a higher grazing potential than those dominated by large-bodied fishes. These findings are consistent with evidence that grazing functions on exploited reefs may be maintained by high densities of small-bodied parrotfish (Bellwood et al. 2012). Smaller fish have higher mass-specific metabolic rates (Gillooly et al. 2001) and thus may feed more intensively per unit of fish biomass than large fish. Therefore, this may explain why the LFI relationship was strongest for scraping rates which were modelled using size-specific feeding data. In contrast, large-bodied fishes comprised a greater fraction of assemblage biomass on high-biomass reefs (e.g. > 500 kg ha^-1^, Fig. 3), suggesting that reefs where grazing functions are maintained by few large individuals may be particularly vulnerable to fishing effects.
+
+To integrate UVC data across the Indo-Pacific we generalized across cropper species which are known to perform distinct feeding roles. For example, croppers have well-documented differences in morphology, diet (e.g. detritivores or turf), and feeding behaviours (Choat et al. 2002, Wilson et al. 2003, Tebbett et al. 2017), though large-scale studies such as ours typically aggregate all cropping species into a single functional group (e.g. Heenan et al. 2016). We defined cropping function using species- or genera-specific bite rates, with a high proportion of individuals assigned average grazing rates ([Supplementary Methods](https://github.com/jpwrobinson/grazing-grads/blob/master/supp-material.pdf), Table S1, Fig. S3). As such, current practices for estimating cropping function at assemblage scales are largely reflective of biomass levels rather than species-specific differences in feeding rate. We inferred feeding rates of 46 unobserved species from nine well-studied species, which limited our understanding of assemblage-level cropping function. Although small-scale studies of feeding behaviours (e.g. Marshell & Mumby 2015, Tebbett et al. 2017) inevitably provide greater taxonomic resolution than large-scale studies which infer feeding behaviours for high numbers of species (here), uniting behavioural data with community-level ecological surveys is a key frontier for functional ecology research on coral reefs. Certainly, future macroscale research on reef grazing functions will require more high resolution databases on cropping feeding behaviours. Finally, because our UVC datasets excluded fish < 8 cm, we likely underestimated the grazing potential of small-bodied individuals which only produce minimal bite scars and thus also contribute to cropping rates (Adam et al. 2018; Hoey 2018).
+
+For scraping functions, which are more consistent among species (Bellwood and Choat 1990, Bonaldo et al. 2014) and more finely resolved with species- and size-specific bite rates, our results suggest that grazing rates can partially decouple from grazing biomass. Such patterns support recent findings that grazing metrics which include species-specific feeding behaviours are better predictors of benthic change than grazing biomass (Steneck et al. 2018). For both functions, our approach of modelling genera- and species-specific bite rates from observations collected in several regions enabled us to leverage observational data in a hierarchical framework which predicts grazing rates of new, related species, given uncertainties in species and genera (and body size for scrapers). For example, we were able to assign bite rates to species observed in UVC but not observed in feeding surveys, with estimates that were informed by the feeding behaviour of closely related congeners. Such models could be further improved with additional feeding data on other herbivore species in different regions, and could even be developed to account for temperature effects on grazing rates (Bruno et al. 2015) and examine how herbivory might respond to ocean warming. 
+
+Random intercepts in the predictive models indicated that regional differences in grazing rates were unexplained by benthic and fishing covariates, which is likely due to unmeasured processes that control feeding rates and herbivore biomass. For example, herbivore biomass variation (and thus grazing function) has been linked to differences in benthic (Russ et al. 2003) and oceanic productivity (Heenan et al. 2016). Similarly, behavioural observations indicate that grazing intensity is constrained by wave exposure (Bejarano et al. 2017) and sedimentation (Goatley & Bellwood 2012), while scraping rates can be higher in no-take fishing areas (Nash et al. 2016b) which may have led us to underestimate grazing function on protected reefs. Grazing rates may also increase with biodiversity, whereby grazing is maximised when numerous common species are abundant (i.e. high species richness) and when the identity of dominant grazing species varies among neighbouring reefs (i.e. high $\beta$-diversity) (Lefcheck et al. 2019), or simply because biodiversity promotes fish biomass (Duffy et al. 2016). Because such biodiversity effects operate at regional scales, compositional differences may further contribute to the unexplained variation in our modelled grazing rates. More broadly, our space-for-time approach and focus on bottom-up and top-down drivers of herbivore grazing precludes detection of non-linear changes in grazing rates that may arise when herbivore assemblages reorganize in response to acute disturbances (Han et al. 2016). Temporal analyses which link habitat suitability, primary productivity, and herbivory would greatly develop our understanding of how grazing functions influence long-term changes in reef state and, for example, identify grazing thresholds for maintaining coral-dominated reefs.
+
+By integrating feeding rates with UVC data across a gradient of grazing biomass, we generated reef-level estimates of potential grazing pressure at four Indo-Pacific coral reefs. Our study demonstrates how benthic habitat and fishing pressure influence the functional potential of herbivore assemblages, at relevant scales for understanding ecosystem-level responses to disturbances such as bleaching (Nash et al. 2016a). Cropping pressure is likely to increase in response to stressors which clear substrate space for turf growth, though responses to physical disturbances will vary across species according to their life history characteristics (e.g. recruitment rates, Russ et al. 2018). Intact reef structure will be critical for maintenance of both grazing functions, though reefs in close proximity to human populations are unlikely to return to wilderness levels of scraping pressure, even with protection from fishing (MacNeil et al. 2015). For a given level of biomass, dominance by smaller-bodied fishes will enhance grazing, though we stress that biomass was by far the most important predictor of grazing functions and recovery or protection of fish biomass will help ensure herbivory processes are functionally intact on degraded coral reefs (Williams et al. 2016). 
+
+#### Acknowledgements
+
+We thank Morgan Pratchett (Chagos archipelago) and Fraser Januchowski-Hartley (GBR) for collecting and sharing benthic UVC data. We acknowledge funding from the Royal Society (NAGJ: UF140691, CHG-R1-170087), Australian Research Council (ASH: DE130100688; NAJG: DE130101705), and the Leverhulme Trust, and a Lizard Island Reef Research Foundation Doctoral Fellowship (AGL). Logistics and field support in Maldives was provided by Tim Godfrey, in Chagos by Charles Sheppard and the British Indian Ocean Territory Administration, in the Great Barrier Reef on board the Kalinda, and in Seychelles by Seychelles Fishing Authority, Seychelles National Parks Authority, and Nature Seychelles.
+
+#### Authors’ contributions
+
+JR conceived the study. AGL, AH, KN, SW and NG designed field surveys and collected ecological data. JR, JMI, JD, JH, SH analysed data and wrote the first draft of the manuscript. All authors contributed to interpretation of results and provided editorial comments.
+
+#### Data accessibility
+
+Data and R scripts are provided at github.com/jpwrobinson/grazing-grads.
+
+
+#### References
+
+Adam, T. C., Duran, A., Fuchs, C. E., Roycroft, M. V., Rojas, M. C., Ruttenberg, B. I., & Burkepile, D. E. (2018). Comparative analysis of foraging behavior and bite mechanics reveals complex functional diversity among Caribbean parrotfishes. Marine Ecology Progress Series, 597, 207–220.
+ 
+Arnold, S. N., Steneck, R. S., & Mumby, P. J. (2010). Running the gauntlet: inhibitory effects of algal turfs on the processes of coral recruitment. Marine Ecology Progress Series, 414, 91–105.
+
+Bartoń, K. (2013). MuMIn: Multi-Model Inference, version 1.9. 0. R Package, 1(5), 18.
+
+Bates, D., Maechler, M., Bolker, B., & Walker, S. (2015). Fitting linear mixed-effects models using lme4. Journal of Statistical Software, 67(1), 1–48.
+
+Bejarano, S., Jouffray, J.-B., Chollett, I., Allen, R., Roff, G., Marshell, A., … Mumby, P. J. (2017). The shape of success in a turbulent world: wave exposure filtering of coral reef herbivory. Functional Ecology, 31(6), 1312–1324.
+
+Bellwood, D. R., & Choat, J. H. (1990). A functional analysis of grazing in parrotfishes (family Scaridae): the ecological implications. Environmental Biology of Fishes, 28(1), 189–214.
+
+Bellwood, D. R., Hoey, A. S., & Choat, J. H. (2003). Limited functional redundancy in high diversity systems: resilience and ecosystem function on coral reefs. Ecology Letters, 6(4), 281–285.
+
+Bellwood, D. R., Hoey, A. S., & Hughes, T. P. (2012). Human activity selectively impacts the ecosystem roles of parrotfishes on coral reefs. Proceedings. Biological Sciences / The Royal Society, 279(1733), 1621–1629.
+
+Bellwood, D. R., Hughes, T. P., Folke, C., & Nyström, M. (2004). Confronting the coral reef crisis. Nature, 429(6994), 827–833.
+
+Bergseth, B. J., Gurney, G. G., Barnes, M. L., Arias, A., & Cinner, J. E. (2018). Addressing poaching in marine protected areas through voluntary surveillance and enforcement. Nature Sustainability, 1(8), 421–426.
+
+Bonaldo, R. M., & Bellwood, D. R. (2008). Size-dependent variation in the functional role of the parrotfish Scarus rivulatus on the Great Barrier Reef, Australia. Marine Ecology Progress Series, 360, 237–244.
+
+Bonaldo, R. M., Hoey, A. S., & Bellwood, D. R. (2014). The ecosystem roles of parrotfishes on tropical reefs. Oceanography and Marine Biology: An Annual Review, 52, 81–132.
+
+Bruno, J. F., Carr, L. A., & O’Connor, M. I. (2015). Exploring the role of temperature in the ocean through metabolic scaling. Ecology, 96(12), 3126–3140.
+
+Burkepile, D. E., & Hay, M. E. (2008). Herbivore species richness and feeding complementarity affect community structure and function on a coral reef. Proceedings of the National Academy of Sciences of the United States of America, 105(42), 16201–16206.
+
+Burnham, K. P., & Anderson, D. R. (2003). Model Selection and Multimodel Inference: A Practical Information-Theoretic Approach. New York: Springer Science & Business Media.
+
+Cade, B. S. (2015). Model averaging and muddled multimodel inference. Ecology, 96, 2370–2382.
+
+Cheal, A. J., MacNeil, M. A., Cripps, E., Emslie, M. J., Jonker, M., Schaffelke, B., & Sweatman, H. (2010). Coral–macroalgal phase shifts or reef resilience: links with diversity and functional roles of herbivorous fishes on the Great Barrier Reef. Coral Reefs , 29(4), 1005–1015.
+
+Choat, J. H., & Clements, K. D. (1993). Daily feeding rates in herbivorous labroid fishes. Marine Biology, 117(2), 205–211.
+
+Choat, J. H., Clements, K. D., & Robbins, W. (2002). The trophic status of herbivorous fishes on coral reefs. Marine Biology, 140(3), 613–623.
+
+Cinner, J. E., Huchery, C., Aaron MacNeil, M., Graham, N. A. J., McClanahan, T. R., Maina, J., … Mouillot, D. (2016). Bright spots among the world’s coral reefs. Nature, 535(7612), 416–419.
+
+Clements, K. D., & Howard Choat, J. (2018). Nutritional Ecology of Parrotfishes (Scarinae, Labridae). In Biology of Parrotfishes (pp. 42–68). CRC Press.
+
+Darling, E. S., Graham, N. A. J., Januchowski-Hartley, F. A., Nash, K. L., Pratchett, M. S., & Wilson, S. K. (2017). Relationships between structural complexity, coral traits, and reef fish assemblages. Coral Reefs , 36(2), 561–575.
+
+Doropoulos, C., Hyndes, G. A., Abecasis, D., & Vergés, A. (2013). Herbivores strongly influence algal recruitment in both coral- and algal-dominated coral reef habitats. Marine Ecology Progress Series, 486, 153–164.
+
+Duffy, J. E., Lefcheck, J. S., Stuart-Smith, R. D., Navarrete, S. A., & Edgar, G. J. (2016). Biodiversity enhances reef fish biomass and resistance to climate change. Proceedings of the National Academy of Sciences of the United States of America, 113(22), 6230–6235.
+
+Edwards, C. B., Friedlander, A. M., Green, A. G., Hardt, M. J., Sala, E., Sweatman, H. P., … Smith, J. E. (2014). Global assessment of the status of coral reef herbivorous fishes: evidence for fishing effects. Proceedings of the Royal Society B: Biological Sciences, 281(1774), 20131835.
+
+Feary, D. A., Bauman, A. G., Guest, J., & Hoey, A. S. (2018). Trophic plasticity in an obligate corallivorous butterflyfish. Marine Ecology Progress Series, 605, 165–171.
+
+Froese, R., & Pauly, D. (2018). FishBase [Data set].
+
+Gillooly, J. F., Brown, J. H., West, G. B., Savage, V. M., & Charnov, E. L. (2001). Effects of size and temperature on metabolic rate. Science, 293(5538), 2248–2251.
+
+Gilmour, J. P., Smith, L. D., Heyward, A. J., Baird, A. H., & Pratchett, M. S. (2013). Recovery of an isolated coral reef system following severe disturbance. Science, 340(6128), 69–71.
+
+Goatley, C. H. R., & Bellwood, D. R. (2012). Sediment suppresses herbivory across a coral reef depth gradient. Biology Letters, 8(6), 1016–1018.
+
+Graham, N. A. J., Bellwood, D. R., Cinner, J. E., Hughes, T. P., Norström, A. V., & Nyström, M. (2013). Managing resilience to reverse phase shifts in coral reefs. Frontiers in Ecology and the Environment, 11(10), 541–548.
+
+Graham, N. A. J., Jennings, S., MacNeil, M. A., Mouillot, D., & Wilson, S. K. (2015). Predicting climate-driven regime shifts versus rebound potential in coral reefs. Nature, 518(7537), 94–97.
+
+Graham, N. A. J., McClanahan, T. R., MacNeil, M. A., Wilson, S. K., Cinner, J. E., Huchery, C., & Holmes, T. H. (2017). Human Disruption of Coral Reef Trophic Structure. Current Biology: CB, 27(2), 231–236.
+
+Graham, N. A. J., Wilson, S. K., Jennings, S., Polunin, N. V. C., Bijoux, J. P., & Robinson, J. (2006). Dynamic fragility of oceanic coral reef ecosystems. Proceedings of the National Academy of Sciences of the United States of America, 103(22), 8425–8429.
+
+Green, A. L., & Bellwood, D. R. (2009). Monitoring functional groups of herbivorous reef fishes as indicators of coral reef resilience - A practical guide for coral reef managers in the Asia Pacific region (A practical guide for coral reef managers in the Asia Pacific Region). Gland, Switzerland: IUCN working group on Climate Change and Coral Reefs.
+
+Green, A. L., Maypa, A. P., Almany, G. R., Rhodes, K. L., Weeks, R., Abesamis, R. A., … White, A. T. (2014). Larval dispersal and movement patterns of coral reef fishes, and implications for marine reserve network design. Biological Reviews of the Cambridge Philosophical Society, 90(4), 1215–1247.
+
+Han, X., Adam, T. C., Schmitt, R. J., Brooks, A. J., & Holbrook, S. J. (2016). Response of herbivore functional groups to sequential perturbations in Moorea, French Polynesia. Coral Reefs, 35(3), 999–1009.
+
+Heenan, A., Hoey, A. S., Williams, G. J., & Williams, I. D. (2016). Natural bounds on herbivorous coral reef fishes. Proceedings of the Royal Society B: Biological Sciences, 283(1843), 20161716.
+
+Hicks, C. C., & McClanahan, T. R. (2012). Assessing gear modifications needed to optimize yields in a heavily exploited, multi-species, seagrass and coral reef fishery. PloS One, 7(5), e36022.
+
+Hoey, A.S. (2018) Feeding in parrotfishes: the influence of species, body size, and temperature. In Biology of Parrotfishes (pp. 119-133). CRC Press
+
+Hoey, A. S., & Bellwood, D. R. (2008). Cross-shelf variation in the role of parrotfishes on the Great Barrier Reef. Coral Reefs , 27(1), 37–47.
+
+Hoey, A. S., & Bellwood, D. R. (2011). Suppression of herbivory by macroalgal density: a critical feedback on coral reefs? Ecology Letters, 14(3), 267–273.
+
+Hughes, T. P., Rodrigues, M. J., Bellwood, D. R., Ceccarelli, D., Hoegh-Guldberg, O., McCook, L., … Willis, B. (2007). Phase shifts, herbivory, and the resilience of coral reefs to climate change. Current Biology: CB, 17(4), 360–365.
+
+Jackson, J. B. C. (2008). Colloquium paper: ecological extinction and evolution in the brave new ocean. Proceedings of the National Academy of Sciences of the United States of America, 105 Suppl 1, 11458–11465.
+
+Keesing, F., & Young, T. P. (2014). Cascading Consequences of the Loss of Large Mammals in an African Savanna. Bioscience, 64(6), 487–495.
+
+Lefcheck, J. S., Innes-Gold, A. A., Brandl, S. J., Steneck, R. S., Torres, R. E., & Rasher, D. B. (2019). Tropical fish diversity enhances coral reef functioning across multiple scales. Science Advances, 5(3), eaav6420.
+
+Lokrantz, J., Nyström, M., Thyresson, M., & Johansson, C. (2008). The non-linear relationship between body size and function in parrotfishes. Coral Reefs , 27(4), 967–974.
+
+MacNeil, M. A., Graham, N. A. J., Cinner, J. E., Wilson, S. K., Williams, I. D., Maina, J., … McClanahan, T. R. (2015). Recovery potential of the world’s coral reef fishes. Nature, 520, 341–344.
+
+Marshell, A., & Mumby, P. J. (2015). The role of surgeonfish (Acanthuridae) in maintaining algal turf biomass on coral reefs. Journal of Experimental Marine Biology and Ecology, 473, 152–160.
+
+McClanahan, T. R., Graham, N. A. J., MacNeil, M. A., Muthiga, N. A., Cinner, J. E., Bruggemann, J. H., & Wilson, S. K. (2011). Critical thresholds and tangible targets for ecosystem-based management of coral reef fisheries. Proceedings of the National Academy of Sciences of the United States of America, 108(41), 17230–17233.
+
+McElreath, R. (2017). Rethinking: statistical Rethinking book package. R Package Version, 1.
+
+Metcalfe, D. B., Asner, G. P., Martin, R. E., Silva Espejo, J. E., Huasco, W. H., Farfán Amézquita, F. F., … Malhi, Y. (2014). Herbivory makes major contributions to ecosystem carbon and nutrient cycling in tropical forests. Ecology Letters, 17(3), 324–332.
+
+Mumby, P. J., Dahlgren, C. P., Harborne, A. R., Kappel, C. V., Micheli, F., Brumbaugh, D. R., … Gill, A. B. (2006). Fishing, trophic cascades, and the process of grazing on coral reefs. Science, 311(5757), 98–101.
+
+Munday, P. L., & Jones, G. P. (1998). The Ecological Implications of Small Body Size Among Coral-Reef Fishes. Ocean & Coastal Management, 36, 373–411.
+
+Nash, K. L., Abesamis, R. A., Graham, N. A. J., McClure, E. C., & Moland, E. (2016b). Drivers of herbivory on coral reefs: species, habitat and management effects. Marine Ecology Progress Series, 554, 129–140.
+
+Nash, K. L., Graham, N. A. J., & Bellwood, D. R. (2013). Fish foraging patterns, vulnerability to fishing, and implications for the management of ecosystem function across scales. Ecological Applications, 23(7), 1632–1644.
+
+Nash, K. L., Graham, N. A. J., Jennings, S., Wilson, S. K., & Bellwood, D. R. (2016a). Herbivore cross-scale redundancy supports response diversity and promotes coral reef resilience. Journal of Applied Ecology, 53(3), 646–655.
+
+Polunin, N. V. C., Harmelin-Vivien, M., & Galzin, R. (1995). Contrasts in algal food processing among five herbivorous coral-reef fishes. Oceanographic Literature Review, 47(43), 455–465.
+
+Polunin, N. V. C., & Roberts, C. M. (1993). Greater biomass and value of target coral-reef fishes in two small Caribbean marine reserves. Marine Ecology-Progress Series, 100, 167–167.
+
+Pratchett, M. S. (2005). Dietary overlap among coral-feeding butterflyfishes (Chaetodontidae) at Lizard Island, northern Great Barrier Reef. Marine Biology, 148(2), 373–382.
+
+Priedîtis, A., Howlett, S. J., Baumanis, J., Bagrade, G., Done, G., Jansons, Â., … Ozoliòð, J. (n.d.). Quantification of Deer Browsing in Summer and Its Importance for Game Management in Latvia. Baltic Forestry, 23(2), 423-431.
+
+Rasher, D. B., Hoey, A. S., & Hay, M. E. (2013). Consumer diversity interacts with prey defenses to drive ecosystem function. Ecology, 94(6), 1347–1358.
+
+Robinson, J. P. W., Williams, I. D., Edwards, A. M., McPherson, J., Yeager, L., Vigliola, L., … Baum, J. K. (2017). Fishing degrades size structure of coral reef fish communities. Global Change Biology, 23(3), 1009–1022.
+
+Robinson, J. P. W., Williams, I. D., Yeager, L. A., McPherson, J. M., Clark, J., Oliver, T. A., & Baum, J. K. (2018). Environmental conditions and herbivore biomass determine coral reef benthic community composition: implications for quantitative baselines. Coral Reefs, 37(4), 1157-1168.
+
+Roff, G., Doropoulos, C., Zupan, M., Rogers, A., Steneck, R. S., Golbuu, Y., & Mumby, P. J. (2015). Phase shift facilitation following cyclone disturbance on coral reefs. Oecologia, 178(4), 1193–1203.
+
+Royo, A. A., Collins, R., Adams, M. B., Kirschbaum, C., & Carson, W. P. (2010). Pervasive interactions between ungulate browsers and disturbance regimes promote temperate forest herbaceous diversity. Ecology, 91(1), 93–105.
+
+Russ, G. R. (2003). Grazer biomass correlates more strongly with production than with biomass of algal turfs on a coral reef. Coral Reefs , 22(1), 63–67.
+
+Russ, G. R., Payne, C. S., Bergseth, B. J., Rizzari, J. R., Abesamis, R. A., & Alcala, A. C. (2018). Decadal-scale response of detritivorous surgeonfishes (family Acanthuridae) to no-take marine reserve protection and changes in benthic habitat. Journal of Fish Biology, 93(5), 887–900.
+
+Russ, G. R., Questel, S.-L. A., Rizzari, J. R., & Alcala, A. C. (2015). The parrotfish–coral relationship: refuting the ubiquity of a prevailing paradigm. Marine Biology, 162(10), 2029–2045.
+
+Samoilys, M. A., & Carlos, G. (2000). Determining Methods of Underwater Visual Census for Estimating the Abundance of Coral Reef Fishes. Environmental Biology of Fishes, 57(3), 289–304.
+
+Schielzeth, H. (2010). Simple means to improve the interpretability of regression coefficients: Interpretation of regression coefficients. Methods in Ecology and Evolution, 1(2), 103–113.
+
+Steneck, R. S., Mumby, P. J., MacDonald, C., Rasher, D. B., & Stoyle, G. (2018). Attenuating effects of ecosystem management on coral reefs. Science Advances, 4(5), eaao5493.
+
+Taylor, B. M., Houk, P., Russ, G. R., & Choat, J. H. (2014). Life histories predict vulnerability to overexploitation in parrotfishes. Coral Reefs , 33(4), 869–878.
+
+Tebbett, S. B., Goatley, C. H. R., & Bellwood, D. R. (2017). Clarifying functional roles: algal removal by the surgeonfishes Ctenochaetus striatus and Acanthurus nigrofuscus. Coral Reefs , 36(3), 803–813.
+
+Tebbett, S. B., Streit, R. P., & Bellwood, D. R. (2019). A 3D perspective on sediment accumulation in algal turfs: Implications of coral reef flattening. The Journal of Ecology, 132753, 3.1‐131.
+
+Vergés, A., Steinberg, P. D., Hay, M. E., Poore, A. G. B., Campbell, A. H., Ballesteros, E., … Wilson, S. K. (2014). The tropicalization of temperate marine ecosystems: climate-mediated changes in herbivory and community phase shifts. Proceedings of the Royal Society B: Biological Sciences, 281(1789), 20140846.
+
+Williams, I. D., White, D. J., Sparks, R. T., Lino, K. C., Zamzow, J. P., Kelly, E. L. A., & Ramey, H. L. (2016). Responses of Herbivorous Fishes and Benthos to 6 Years of Protection at the Kahekili Herbivore Fisheries Management Area, Maui. PloS One, 11(7), e0159100.
+
+Williams, I., & Polunin, N. (2001). Large-scale associations between macroalgal cover and grazer biomass on mid-depth reefs in the Caribbean. Coral Reefs , 19(4), 358–366.
+
+Wilson, S. K., Bellwood, D. R., Choat, J. H., & Furnas, M. J. (2003). Detritus in the epilithic algal matrix and its use by coral reef fishes. Oceanography and Marine Biology: An Annual Review, 41, 279–310.
+
+Wilson, S. K., Fisher, R., Pratchett, M. S., Graham, N. A. J., Dulvy, N. K., Turner, R. A., … Polunin, N. V. C. (2010). Habitat degradation and fishing effects on the size structure of coral reef fish communities. Ecological Applications, 20(2), 442–451.
+
+Wilson, S. K., Fisher, R., Pratchett, M. S., Graham, N. A. J., Dulvy, N. K., Turner, R. A., … Rushton, S. P. (2008). Exploitation and habitat degradation as agents of change within coral reef fish communities. Global Change Biology, 14(12), 2796–2809.
+
+Wilson, S. K., Graham, N. A. J., & Polunin, N. V. C. (2007). Appraisal of visual assessments of habitat complexity and benthic composition on coral reefs. Marine Biology, 151(3), 1069–1076.
+
+Wilson, S. K., Graham, N. A. J., Pratchett, M. S., Jones, G. P., & Polunin, N. V. C. (2006). Multiple disturbances and the global degradation of coral reefs: are reef fishes at risk or resilient? Global Change Biology, 12(11), 2220–2234.
+
+Wilson, S. K., Robinson, J. P. W., Chong-Seng, K., Robinson, J., & Graham, N. A. J. (2019). Boom and bust of keystone structure on coral reefs. Coral Reefs . doi: 10.1007/s00338-019-01818-4
+
+Wismer, S., Tebbett, S. B., Streit, R. P., & Bellwood, D. R. (2019). Spatial mismatch in fish and coral loss following 2016 mass coral bleaching. The Science of the Total Environment, 650(Pt 1), 1487–1498.
+
+Zimov, S. A., Chuprynin, V. I., Oreshko, A. P., Chapin, F. S., Reynolds, J. F., & Chapin, M. C. (1995). Steppe-Tundra Transition: A Herbivore-Driven Biome Shift at the End of the Pleistocene. The American Naturalist, 146(5), 765–794.
+
+Zuur, A. F., Ieno, E. N., & Elphick, C. S. (2010). A protocol for data exploration to avoid common statistical problems. Methods in Ecology and Evolution / British Ecological Society, 1(1), 3–14.
+
+\newpage
+#### R session info
+```{r Rsesh, include=TRUE, echo=FALSE, message=FALSE}
+sink('R_session_info.txt')
+sessionInfo()
+sink()
+```

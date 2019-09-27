@@ -1,10 +1,14 @@
 
 library(here)
-setwd(here('grazing-grads'))
 library(rethinking)
 
-#### Grazer model
+## Should Bayesian models be built (TRUE) or loaded (FALSE)?
+compile.models = FALSE
 
+# data load
+bite<-read.csv("data/bite_rates.csv")
+
+#### Grazer model
 
 # Grazer function is cropping/consumption of turf algae. 
 # We infer this function from the total bite rate of the grazer community, and assume all bites are the same size. 
@@ -15,6 +19,7 @@ grazers<-droplevels(bite[bite$FG == 'Herbivore Grazer',])
 colnames(grazers)[colnames(grazers) == 'Bite.rate']<-'biterate'
 bite.prior=mean(grazers$biterate) ## 30.85, log = 3.43
 
+if(compile.models == TRUE){
 graze.m<-map2stan(
         alist(
           biterate ~ dgamma2(mu, scale),
@@ -26,7 +31,9 @@ graze.m<-map2stan(
           scale ~ dexp(2),
           c(sigmar, sigmar2, sigmar3) ~ dcauchy(0, 1)
         ),
-        data=grazers, iter = 3000, chains =1, cores = 4)
+        data=grazers, iter = 3000, chains =1, cores = 4)} else {
+  load('results/models/grazer_bite_model.Rdata')
+}
 
 ## Predictions for species, with genus effect
 d.pred <-data.frame(sp = unique(grazers$sp), dataset = 'NA')
@@ -70,7 +77,7 @@ pred.global$lower<-pred.PI[1,]
 pred.global$class <- 'global.mean'
 pred.global$preds<-'global.mean'
 
-p<-rbind(pred.mean, pred.mean.genus, pred.global)
+grazer.bites<-rbind(pred.mean, pred.mean.genus, pred.global)
 
 
 #### Scraper model
@@ -84,6 +91,7 @@ scrapers<-droplevels(bite[bite$FG == 'Herbivore Scraper',])
 colnames(scrapers)[colnames(scrapers) == 'Bite.rate']<-'biterate'
 bite.prior=mean(scrapers$biterate) ## 22.15, log = 3.10
 
+if(compile.models == TRUE){
 scrape.m<-map2stan(
         alist(
           biterate ~ dgamma2(mu, scale),
@@ -96,12 +104,15 @@ scrape.m<-map2stan(
           scale ~ dexp(1),
           c(sigmar, sigmar2, sigmar3) ~ dcauchy(0, 1)
         ),
-        data=scrapers, warmup = 1500, iter = 5000, chains =1, cores = 4)
+        data=scrapers, warmup = 1500, iter = 5000, chains =1, cores = 4)} else {
+  load('results/models/scraper_bite_model.Rdata')
+}
 
 ## now model for area scraped
-area<-read.csv('scrape_sizes.csv')
+area<-read.csv('data/scrape_sizes.csv')
 area.prior=mean(area$bitearea) ## 85.67, log = 4.45
 
+if(compile.models == TRUE){
 scrape.m2<-map2stan(
         alist(
           bitearea ~ dgamma2(mu, scale),
@@ -113,7 +124,9 @@ scrape.m2<-map2stan(
           scale ~ dexp(5)
           #c(sigmar, sigmar2) ~ dcauchy(0, 1)
         ),
-        data=area, warmup = 1500, iter = 5000, chains =1, cores = 4)
+        data=area, warmup = 1500, iter = 5000, chains =1, cores = 4)} else {
+  load('results/models/scraper_bite_area_model.Rdata')
+}
 
 
 ## evaluating predictions for each species
@@ -158,7 +171,7 @@ pred.global$lower<-pred.PI[1,]
 pred.global$class <- 'global.mean'
 pred.global$preds<-'global.mean'
 
-p<-rbind(pred.mean, pred.mean.genus, pred.global)
+scraper.bites<-rbind(pred.mean, pred.mean.genus, pred.global)
 
 
 ## evaluating bite area predictions for each species
