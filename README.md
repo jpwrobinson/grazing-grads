@@ -1,11 +1,9 @@
 # grazing-grads
 This repository contains data and R scripts accompanying Robinson et al. Habitat and fishing control grazing potential on coral reefs. (In Review)
 
-The following R packages were used to tidy, analyse and visualize data.
+R packages used to tidy, analyse and visualize data are given in [R_session_info](R_session_info.txt).
 
-```
-install.packages(c("tidyverse", "rethinking", "here", "lme4", "MuMIn", "cowplot", "piecewiseSEM", "car"))
-```
+The manuscript can be reproduced by knitting [robinson_reproducible.Rmd](robinson_reproducible.Rmd), which regenerates model predictions and embeds figures and text into a PDF.
 
 *Folders contain:*
 
