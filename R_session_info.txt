@@ -1,0 +1,121 @@
+R version 3.6.0 (2019-04-26)
+Platform: x86_64-apple-darwin15.6.0 (64-bit)
+Running under: macOS Mojave 10.14.6
+
+Matrix products: default
+BLAS:   /System/Library/Frameworks/Accelerate.framework/Versions/A/Frameworks/vecLib.framework/Versions/A/libBLAS.dylib
+LAPACK: /Library/Frameworks/R.framework/Versions/3.6/Resources/lib/libRlapack.dylib
+
+locale:
+[1] en_GB.UTF-8/en_GB.UTF-8/en_GB.UTF-8/C/en_GB.UTF-8/en_GB.UTF-8
+
+attached base packages:
+[1] grid      parallel 
+[3] stats     graphics 
+[5] grDevices utils    
+[7] datasets  methods  
+[9] base     
+
+other attached packages:
+ [1] MuMIn_1.42.1      
+ [2] r2glmm_0.1.2      
+ [3] piecewiseSEM_2.0.2
+ [4] scales_1.0.0      
+ [5] lme4_1.1-21       
+ [6] Matrix_1.2-17     
+ [7] gridExtra_2.3     
+ [8] rethinking_1.59   
+ [9] rstan_2.18.2      
+[10] StanHeaders_2.18.1
+[11] here_0.1          
+[12] funk_0.0.0.9000   
+[13] kableExtra_1.1.0  
+[14] knitr_1.22        
+[15] cowplot_0.9.4     
+[16] forcats_0.4.0     
+[17] stringr_1.4.0     
+[18] dplyr_0.8.3       
+[19] purrr_0.3.2       
+[20] readr_1.3.1       
+[21] tidyr_0.8.3       
+[22] tibble_2.1.3      
+[23] ggplot2_3.2.1     
+[24] tidyverse_1.2.1   
+
+loaded via a namespace (and not attached):
+ [1] nlme_3.1-139          
+ [2] pbkrtest_0.4-7        
+ [3] matrixStats_0.54.0    
+ [4] lubridate_1.7.4       
+ [5] RColorBrewer_1.1-2    
+ [6] webshot_0.5.1         
+ [7] httr_1.4.0            
+ [8] rprojroot_1.3-2       
+ [9] tools_3.6.0           
+[10] backports_1.1.4       
+[11] R6_2.4.0              
+[12] lazyeval_0.2.2        
+[13] colorspace_1.4-1      
+[14] withr_2.1.2           
+[15] tidyselect_0.2.5      
+[16] prettyunits_1.0.2     
+[17] processx_3.3.1        
+[18] curl_3.3              
+[19] compiler_3.6.0        
+[20] cli_1.1.0             
+[21] rvest_0.3.2           
+[22] xml2_1.2.0            
+[23] labeling_0.3          
+[24] mvtnorm_1.0-10        
+[25] callr_3.2.0           
+[26] digest_0.6.20         
+[27] foreign_0.8-71        
+[28] minqa_1.2.4           
+[29] rmarkdown_1.12        
+[30] rio_0.5.16            
+[31] pkgconfig_2.0.2       
+[32] htmltools_0.3.6       
+[33] highr_0.8             
+[34] rlang_0.4.0           
+[35] readxl_1.3.1          
+[36] rstudioapi_0.10       
+[37] generics_0.0.2        
+[38] jsonlite_1.6          
+[39] zip_2.0.1             
+[40] car_3.0-2             
+[41] wesanderson_0.3.6.9000
+[42] inline_0.3.15         
+[43] magrittr_1.5          
+[44] loo_2.1.0             
+[45] Rcpp_1.0.1            
+[46] munsell_0.5.0         
+[47] abind_1.4-5           
+[48] stringi_1.4.3         
+[49] yaml_2.2.0            
+[50] carData_3.0-2         
+[51] MASS_7.3-51.4         
+[52] plyr_1.8.4            
+[53] pkgbuild_1.0.3        
+[54] crayon_1.3.4          
+[55] lattice_0.20-38       
+[56] haven_2.1.0           
+[57] splines_3.6.0         
+[58] hms_0.4.2             
+[59] ps_1.3.0              
+[60] pillar_1.4.2          
+[61] boot_1.3-22           
+[62] stats4_3.6.0          
+[63] glue_1.3.1            
+[64] evaluate_0.13         
+[65] data.table_1.12.2     
+[66] modelr_0.1.4          
+[67] nloptr_1.2.1          
+[68] cellranger_1.1.0      
+[69] gtable_0.3.0          
+[70] assertthat_0.2.1      
+[71] xfun_0.6              
+[72] openxlsx_4.1.0        
+[73] broom_0.5.2           
+[74] coda_0.19-2           
+[75] viridisLite_0.3.0     
+[76] lemon_0.4.3           
