@@ -25,5 +25,4 @@ The manuscript can be reproduced by knitting [robinson_reproducible.Rmd](robinso
 - [02_convert_biom_to_bites.R](scripts/02_convert_biom_to_bites.R) converts cropper and scraper biomass to grazing rates
 - [03_MMI_tavlue_analysis.R](scripts/03_MMI_tavlue_analysis.R) runs multi-model inference to examine drivers of grazing rates for croppers and scrapers
 - [MMI_tvalue_func.R](scripts/MMI_tvalue_func.R) is `mmi_tvalue`, a function for AIC-based multimodel inference, which standardizes t-values and model predictions across a top-model set derived from a global model
-- [MMI_tvalue_analysis.R]([scripts/MMI_tvalue_analysis.R]) applies MMI_tvalue_func.R to grazing rates derived from UVC datasets
 - [scaling_function.R](scripts/scaling_function.R) is `scaler`, a function to scale and centre covariates before statistical modelling
