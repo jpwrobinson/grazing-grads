@@ -1,5 +1,7 @@
 # grazing-grads
-This repository contains data and R scripts accompanying Robinson et al. Habitat and fishing control grazing potential on coral reefs. (In Press, Functional Ecology)
+This repository contains data and R scripts accompanying Robinson et al. Habitat and fishing control grazing potential on coral reefs. (2019, Functional Ecology)
+
+https://besjournals.onlinelibrary.wiley.com/doi/10.1111/1365-2435.13457
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.3463279.svg)](https://zenodo.org/record/3463279)
 
